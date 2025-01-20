@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "521197592091",
+    "firebase_url": "https://backendwork-ee42d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "backendwork-ee42d",
+    "storage_bucket": "backendwork-ee42d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521197592091:android:dda24ceb055508340222be",
+        "android_client_info": {
+          "package_name": "com.example.crud"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxNtJi3vViYHqbPmXCSyoVSEDE3S49a4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521197592091:android:ae0bba8950f991210222be",
+        "android_client_info": {
+          "package_name": "com.example.machinetest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxNtJi3vViYHqbPmXCSyoVSEDE3S49a4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
