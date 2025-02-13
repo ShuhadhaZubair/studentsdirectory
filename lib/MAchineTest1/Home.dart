@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:machinetest/LogIn.dart';
-import 'package:machinetest/provider.dart';
+import 'package:machinetest/MAchineTest1/provider.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'LogIn.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,21 +24,15 @@ class _HomeState extends State<Home> {
   var user;
 
 
-  Future<void> getdata() async {
-    SharedPreferences data = await SharedPreferences.getInstance();
-    String? userId = data.getString("userid");
-
-    if (userId != null) {
-      DocumentSnapshot userDoc =
-      await FirebaseFirestore.instance.collection("details").doc(userId).get();
-
-      setState(() {
-        user = userId;
-        userprofile = userDoc;
-        print("$user data fetched");
-      });
-    }
-
+  Future<void> getdata()async {
+    SharedPreferences data =await SharedPreferences.getInstance();
+    setState(() {
+      user = data.getString("userid");
+      print("$user data fetched");
+    });
+  }
+  Future<void> getbyid() async{
+    userprofile= await FirebaseFirestore.instance.collection("details").doc(user).get();
   }
 
 
@@ -63,31 +59,55 @@ class _HomeState extends State<Home> {
     return DefaultTabController(
         length: 5,
         child: Scaffold(
-            appBar: AppBar(
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(),
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(kToolbarHeight),
+              child: FutureBuilder(
+                future: getbyid(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting)
+        return Center(child: CircularProgressIndicator());
+      else if (snapshot.hasError) return Text("Error ${snapshot.error}");
+      return AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Text(
+              (userprofile!["name"] ?? "").isNotEmpty
+                  ? userprofile!["name"]![0].toUpperCase()
+                  : "",
+              style: TextStyle(color: Color.fromARGB(255, 18, 54, 80),fontSize: 20,fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        title: Row(
+          children: [ Text(
+            "Hi ", // Use userName variable
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 18),
+          ),
+            Text(
+              userprofile?["name"] ?? "", // Use userName variable
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white,fontSize: 18),
+            ),
+            Text(
+              " , ", // Use userName variable
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+          ],
+        ),
+        backgroundColor: Color.fromARGB(255, 18, 54, 80),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout, color: Colors.white),
+            onPressed: () {
+              signOut();
+            },
+          ),
+        ],
+      );
+    }
               ),
-              title: Row(
-                children: [ Text(
-                  "Hi", // Use userName variable
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-                  Text(
-                    userprofile?["name"] ??"", // Use userName variable
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                ],
-              ),
-              backgroundColor: Color.fromARGB(255, 18, 54, 80),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.logout, color: Colors.white),
-                  onPressed: () {
-                    signOut();
-                  },
-                ),
-              ],
             ),
             body: Padding(
                 padding: const EdgeInsets.all(16.0),

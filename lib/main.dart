@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:machinetest/firebase_options.dart';
-import 'package:machinetest/provider.dart';
 import 'package:provider/provider.dart';
 
-import 'Home.dart';
-import 'LogIn.dart';
-import 'SignUp.dart';
+import 'MAchineTest1/provider.dart';
+import 'SchoolManagement/Controller.dart';
+import 'SchoolManagement/Login.dart';
+import 'SchoolManagement/Splash.dart';
+import 'SchoolManagement/StudentHome.dart';
+import 'SchoolManagement/StudentSignUp.dart';
+
 
 Future <void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(AdminDashboardController());
   runApp(const MyApp());
 }
 
@@ -46,7 +52,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
 
         ),
-        home: Signup()
+        home: Splash()
       ),
     );
   }
